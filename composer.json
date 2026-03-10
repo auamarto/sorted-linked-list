@@ -1,0 +1,46 @@
+{
+    "name": "auamarto/sorted-linked-list",
+    "description": "Sorted linked list for ints",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Auamarto\\SortedLinkedList\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "szymon-kunowski",
+            "email": "szymon.kunowski@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.0",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "scripts": {
+        "cs:check": "php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix --config=.php-cs-fixer.php",
+        "phpcs:check": "phpcs --standard=phpcs.xml",
+        "phpcs:fix": "phpcbf --standard=phpcs.xml",
+        "stan": "phpstan analyse -c phpstan.neon",
+        "test": "phpunit -c phpunit.xml",
+        "test:performance": "RUN_PERF_TEST=1 phpunit -c phpunit.xml --filter PerformanceTest",
+        "test:coverage": "php -d xdebug.mode=coverage -d xdebug.start_with_request=no ./vendor/bin/phpunit -c phpunit.xml --coverage-text --coverage-clover build/coverage/clover.xml",
+        "test:coverage:html": "php -d xdebug.mode=coverage -d xdebug.start_with_request=no ./vendor/bin/phpunit -c phpunit.xml --coverage-html build/coverage/html",
+        "qa": [
+            "@cs:check",
+            "@phpcs:check",
+            "@stan",
+            "@test"
+        ]
+    },
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
