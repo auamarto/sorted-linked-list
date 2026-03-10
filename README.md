@@ -1,11 +1,20 @@
-# SortedLinkedList (ints, ASC)
+# SortedLinkedList (ints | strings, ASC)
 
-A tiny PHP library that implements a **sorted (ascending), unique** linked list of integers.
+A tiny PHP library that implements a **sorted (ascending), unique** linked list of integers or strings but not both.
 
 - Values are always kept in **ASC order**.
 - Values are **unique** (attempting to insert a duplicate throws).
 - Implemented as a classic singly linked list (`Node -> next`), with `head` and `tail` pointers.
 - Optional **finger search** can speed up workloads where you search/insert in non-decreasing order.
+
+> Note on types
+>
+> A single list instance is **type-locked**: once you insert the first value, the list will accept **only ints** or **only strings**.
+> Mixing types (e.g. inserting `'2'` after `1`) throws `InvalidArgumentException`. Calling `clear()` resets the type lock.
+>
+> Note on string ordering
+>
+> Strings are compared using PHP's default string comparison operators (`<`, `<=`, ...), i.e. **lexicographical** order.
 
 ## Installation
 
@@ -40,6 +49,41 @@ var_dump($list->toArray()); // [5, 20]
 
 $list->clear();
 var_dump($list->count()); // 0
+```
+
+## Using strings
+
+The API is exactly the same as for integers — just pass string values.
+
+```php
+<?php
+
+use Auamarto\SortedLinkedList\SortedLinkedList;
+
+$list = new SortedLinkedList();
+
+$list->add('banana');
+$list->add('apple');
+$list->add('cherry');
+
+var_dump($list->toArray()); // ['apple', 'banana', 'cherry']
+var_dump($list->min());     // 'apple'
+var_dump($list->max());     // 'cherry'
+
+var_dump($list->contains('banana')); // true
+var_dump($list->remove('banana'));   // true
+var_dump($list->toArray());          // ['apple', 'cherry']
+```
+
+You can also build a list quickly when the input is already strictly sorted and unique:
+
+```php
+<?php
+
+use Auamarto\SortedLinkedList\SortedLinkedList;
+
+$list = SortedLinkedList::fromSortedUnique(['a', 'b', 'c']);
+var_dump($list->toArray()); // ['a', 'b', 'c']
 ```
 
 ## API
